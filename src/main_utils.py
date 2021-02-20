@@ -7,5 +7,5 @@ config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
 
-onlyfiles = [f for f in listdir(data_path) if isfile(join(data_path, f))]
-print(onlyfiles)
+def get_files_with_data():
+    return [f for f in listdir(data_path) if '.csv' in f]
