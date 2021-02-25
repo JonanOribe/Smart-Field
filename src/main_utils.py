@@ -14,5 +14,5 @@ def get_files_with_data():
     return [f for f in listdir(data_path) if ('.xlsx' in f and not 'lock.' in f)]
 
 def dendometer_and_battery_cleaner(df):
-    df.drop(['Unnamed: 0', 'Batería de la estacion'], axis = 1, inplace = True)
-    return df[df['Dendrómetro'].notna()]
+    df.drop(['FECHA', 'BAT'], axis = 1, inplace = True)
+    return df[df['TD'].notna()]
