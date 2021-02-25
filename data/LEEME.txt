@@ -1,0 +1,18 @@
+Dataset de estación meteorológica con las siguientes variables:
+
+* BAT:		Nivel de batería de la estación meteorológica.
+* TCB:		Temperatura ambiente
+* HUMB:		Humedad ambiente
+* SOILT:	Temperatura suelo
+* SOIL1:	Humedad de suelo a 30 cm fuera de la raiz de la viña
+* SOIL2:	Humedad de suelo a 30 cm en la raiz de la viña
+* SOIL3:	Humedad de suelo a 90 cm en la raiz de la viña
+* PAR:		Radiación solar PAR (https://en.wikipedia.org/wiki/Photosynthetically_active_radiation)
+* TD:		Dendrómetro
+* ANE:		Velocidad del viento
+* WV:		Dirección del viento
+* PLV:		Precipitación acumulada
+
+En el fichero ALTAR_2015_2017.csv hay 68157 registros cada 10 minutos aproximadamente (no todas las muestras están igual de equiespaciadas) entre 11/09/2015 y 03/01/2017, en el que no están todas las variables mencionadas anteriormente.
+
+En el fichero DATOS_ALTAR.xlsx hay 52880 registros con la misma frecuencia que el fichero anterior y entre 01/01/2017 y 10/01/2018, con todas las variables anteriores
