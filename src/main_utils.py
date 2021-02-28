@@ -36,3 +36,10 @@ def generate_decision_tree(df,df_columns):
 def generate_reports(X_train,X_test):
     report = sweetviz.compare([X_train, "Train"], [X_test, "Test"], "TCB")
     report.show_html("informe_datos.html")
+
+def generate_validation_data(df,df_columns):
+    df_validation=df.sample(n = 600, replace = False)
+    feature_cols = [a for a in df_columns if a not in ['SOILT']]
+    df_validation_X = df[feature_cols] # Features
+    df_validation_y = df['SOILT'] # Target variable
+    return df.drop(df_validation.index),df_validation_X,df_validation_y
