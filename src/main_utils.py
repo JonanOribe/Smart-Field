@@ -4,7 +4,7 @@ from os.path import isfile, join
 import csv
 from configparser import ConfigParser
 import sweetviz
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 PROYECT_PATH=os.getcwd()
@@ -28,14 +28,14 @@ def generate_decision_tree(df,df_columns):
     # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     # Create Decision Tree classifer object
-    clf = DecisionTreeClassifier()
+    clf = RandomForestClassifier(max_depth=10, random_state=0)
 
     # Train Decision Tree Classifer
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train,y_test
 
 def generate_reports(X_train,X_test):
     report = sweetviz.compare([X_train, "Train"], [X_test, "Test"], "TCB")
-    report.show_html("informe_datos.html")
+    report.show_html("informe_datos.html",open_browser=False)
 
 def generate_validation_data(df,df_columns):
     df_validation=df.sample(n = 6000, replace = False)
