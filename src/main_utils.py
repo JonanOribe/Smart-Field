@@ -38,7 +38,7 @@ def generate_reports(X_train,X_test):
     report.show_html("informe_datos.html",open_browser=False)
 
 def generate_validation_data(df,df_columns):
-    df_validation=df.sample(n = 6000, replace = False)
+    df_validation=df.sample(n = 3000, replace = False)
     feature_cols = [a for a in df_columns if a not in ['SOILT']]
     df_validation_X = df[feature_cols] # Features
     df_validation_y = df['SOILT'] # Target variable
