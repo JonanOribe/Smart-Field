@@ -4,8 +4,8 @@ from os.path import isfile, join
 import csv
 from configparser import ConfigParser
 import sweetviz
-from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
-from sklearn.model_selection import train_test_split # Import train_test_split function
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
 
 PROYECT_PATH=os.getcwd()
 config = ConfigParser()
@@ -26,7 +26,7 @@ def generate_decision_tree(df,df_columns):
     X = df[feature_cols] # Features
     y = df['SOILT'] # Target variable
     # Split dataset into training set and test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1) # 70% training and 30% test
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     # Create Decision Tree classifer object
     clf = DecisionTreeClassifier()
 
@@ -38,7 +38,7 @@ def generate_reports(X_train,X_test):
     report.show_html("informe_datos.html")
 
 def generate_validation_data(df,df_columns):
-    df_validation=df.sample(n = 600, replace = False)
+    df_validation=df.sample(n = 6000, replace = False)
     feature_cols = [a for a in df_columns if a not in ['SOILT']]
     df_validation_X = df[feature_cols] # Features
     df_validation_y = df['SOILT'] # Target variable
