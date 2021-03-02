@@ -12,6 +12,7 @@ config = ConfigParser()
 config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
+TARGET = config['DEFAULT']['target']
 
 def get_files_with_data():
     return [f for f in listdir(data_path) if ('.xlsx' in f and not 'lock.' in f)]
@@ -22,9 +23,9 @@ def dendometer_and_battery_cleaner(df):
 
 def generate_decision_tree(df,df_columns):
     #split dataset in features and target variable
-    feature_cols = [a for a in df_columns if a not in ['SOILT']]
+    feature_cols = [a for a in df_columns if a not in [TARGET]]
     X = df[feature_cols] # Features
-    y = df['SOILT'] # Target variable
+    y = df[TARGET] # Target variable
     # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     # Create Decision Tree classifer object
@@ -39,7 +40,7 @@ def generate_reports(X_train,X_test):
 
 def generate_validation_data(df,df_columns):
     df_validation=df.sample(n = 3000, replace = False)
-    feature_cols = [a for a in df_columns if a not in ['SOILT']]
+    feature_cols = [a for a in df_columns if a not in [TARGET]]
     df_validation_X = df[feature_cols] # Features
-    df_validation_y = df['SOILT'] # Target variable
+    df_validation_y = df[TARGET] # Target variable
     return df.drop(df_validation.index),df_validation_X,df_validation_y
