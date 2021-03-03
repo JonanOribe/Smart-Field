@@ -13,12 +13,17 @@ config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
 TARGET = config['DEFAULT']['target']
+FORMAT = config['DEFAULT']['format']
+COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
+
+def from_str_to_array():
+    return COLUMNS_TO_DROP.split(',')
 
 def get_files_with_data():
-    return [f for f in listdir(data_path) if ('.xlsx' in f and not 'lock.' in f)]
+    return [f for f in listdir(data_path) if (FORMAT in f and not 'lock.' in f)]
 
 def dendometer_and_battery_cleaner(df):
-    df.drop(['FECHA', 'BAT'], axis = 1, inplace = True)
+    df.drop(from_str_to_array(), axis = 1, inplace = True)
     return df[df['TD'].notna()]
 
 def generate_decision_tree(df,df_columns):
@@ -29,7 +34,7 @@ def generate_decision_tree(df,df_columns):
     # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     # Create Decision Tree classifer object
-    clf = RandomForestClassifier(max_depth=10, random_state=0)
+    clf = RandomForestClassifier(max_depth=10, random_state=0)#(max_depth=10, random_state=0)
 
     # Train Decision Tree Classifer
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train,y_test
