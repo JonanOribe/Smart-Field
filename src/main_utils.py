@@ -15,7 +15,8 @@ data_path = config['DEFAULT']['data_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
 COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
-dendrometer_ajust_value=int(config['DEFAULT']['dendrometer_ajust_value'])
+DENDROMETER_AJUST_VALUE=int(config['DEFAULT']['dendrometer_ajust_value'])
+TREE_MAX_DEPTH=int(config['DEFAULT']['tree_max_depth'])
 
 def from_str_to_array():
     return COLUMNS_TO_DROP.split(',')
@@ -37,7 +38,7 @@ def generate_decision_tree(df,df_columns):
     # Split dataset into training set and test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
     # Create Decision Tree classifer object
-    clf = RandomForestClassifier(max_depth=10,random_state=0)#(max_depth=10, random_state=0)
+    clf = RandomForestClassifier(max_depth=TREE_MAX_DEPTH,random_state=0)
 
     # Train Decision Tree Classifer
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train.astype('int'),y_test.astype('int')
@@ -54,4 +55,4 @@ def generate_validation_data(df,df_columns):
     return df.drop(df_validation.index),df_validation_X,df_validation_y
 
 def dendrometer_ajust(dendrometer_value):
-    return int(str(dendrometer_value)[:dendrometer_ajust_value])
+    return int(str(dendrometer_value)[:DENDROMETER_AJUST_VALUE])
