@@ -31,16 +31,12 @@ def dendrometer_and_battery_cleaner(df):
     return df
 
 def generate_decision_tree(df,df_columns):
-    #split dataset in features and target variable
     feature_cols = [a for a in df_columns if a not in [TARGET]]
-    X = df[feature_cols] # Features
-    y = df[TARGET] # Target variable
-    # Split dataset into training set and test set
+    X = df[feature_cols]
+    y = df[TARGET]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
-    # Create Decision Tree classifer object
     clf = RandomForestClassifier(max_depth=TREE_MAX_DEPTH,random_state=0)
 
-    # Train Decision Tree Classifer
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train.astype('int'),y_test.astype('int')
 
 def generate_reports(X_train,X_test):
@@ -50,8 +46,8 @@ def generate_reports(X_train,X_test):
 def generate_validation_data(df,df_columns):
     df_validation=df.sample(n = 3000, replace = False)
     feature_cols = [a for a in df_columns if a not in [TARGET]]
-    df_validation_X = df[feature_cols] # Features
-    df_validation_y = df[TARGET].astype('int')# Target variable
+    df_validation_X = df[feature_cols]
+    df_validation_y = df[TARGET].astype('int')
     return df.drop(df_validation.index),df_validation_X,df_validation_y
 
 def dendrometer_ajust(dendrometer_value):
