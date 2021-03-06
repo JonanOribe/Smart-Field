@@ -25,12 +25,12 @@ for data_block in xlsx_arr:
     #Predict the response for test dataset
     y_pred = clf.predict(X_test)
     # Model Accuracy, how often is the classifier correct?
-    print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test.astype('int'), y_pred.astype('int')))
+    print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
     #print(y_test.astype('int'))
     #print(y_pred.astype('int'))
 
     val_pred = clf.predict(df_validation_X)
-    print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y.astype('int'), val_pred.astype('int')))
+    print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y, val_pred))
     #print(df_validation_y.astype('int'))
     #print(val_pred.astype('int'))
     generate_reports(X_train,X_test)
