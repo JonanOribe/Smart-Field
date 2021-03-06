@@ -28,3 +28,8 @@ def test_dendrometer_ajust():
         val=dendrometer_ajust(dendrometer_value)
         final_val=int(str(val)[:DENDROMETER_AJUST_VALUE])
         assert final_val<(10**(DENDROMETER_AJUST_VALUE)) and not final_val<(10**(DENDROMETER_AJUST_VALUE-1))
+
+def test_config_params():
+    arr_to_test=[data_path,TARGET,FORMAT,COLUMNS_TO_DROP,DENDROMETER_AJUST_VALUE,TREE_MAX_DEPTH]
+    for config_to_test in arr_to_test:
+        assert len(str(config_to_test))>0
