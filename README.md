@@ -7,4 +7,4 @@
 <li>Instalamos librerías con: pip3 install -r requirements.txt</li>
 <h3>:mag_right: Testing</h3>
 <li>Lanzamos los tests con <b>pytest -v</b></li>
-<h3>:rocket: Lanzamos el proyecto con:...</h3>
+<h3>:rocket: Lanzamos el proyecto con: ...</h3>
