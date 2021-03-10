@@ -1,7 +1,7 @@
 # Smart-Field
 
 <h3>:construction: Entorno de trabajo:</h3>
-<li>Creamos con: <b>python3 -m venv Smart-Field-env</b></li>
+<li>Creamos con: <b>python3 -m venv Smart-Field-env</b></li> #Ya viene creado desde el repositorio
 <li>Activamos con: <b>Smart-Field-env\Scripts\activate</b></li>
 <h3>:books: Dependencias</h3>
 <li>Instalamos librerías con: <b>pip3 install -r requirements.txt</b></li>
