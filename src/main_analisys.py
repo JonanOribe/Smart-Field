@@ -32,4 +32,6 @@ for data_block in xlsx_arr:
 
         generate_reports(X_train,X_test)
     else:
+        # For difference in hours
+        df['diff_in_hours']=(df['FECHA'].iloc[16] - df['FECHA'].iloc[0]).components.hours#TODO
         pass

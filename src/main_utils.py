@@ -62,6 +62,11 @@ def prepare_dataset(data_block,future=0):
     file_path='{}{}{}'.format(PROYECT_PATH,'/data/',data_block)
     df=pd.read_excel(file_path, skiprows=1)
     df=dendrometer_and_battery_cleaner(df,future)
+    return ajust_columns(df,future)
+
+def ajust_columns(df,future):
     df_columns=df.columns
+    if(future==1):
+        df_columns=df_columns.drop(labels=['FECHA'])
     df[df_columns] = df[df_columns].apply(pd.to_numeric)
     return df,df_columns
