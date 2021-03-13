@@ -1,22 +1,18 @@
 import os
-import pandas as pd
 from sklearn import metrics
 from termcolor import colored
 from sklearn import tree
 import matplotlib.pyplot as plt
 
-from main_utils import dendrometer_and_battery_cleaner, generate_decision_tree, generate_reports, generate_validation_data, get_files_with_data
+from main_utils import dendrometer_and_battery_cleaner, generate_decision_tree, generate_reports, generate_validation_data, get_files_with_data,prepare_dataset
 
 PROYECT_PATH=os.getcwd()
 
 xlsx_arr=get_files_with_data()
 
 for data_block in xlsx_arr:
-    file_path='{}{}{}'.format(PROYECT_PATH,'/data/',data_block)
-    df=pd.read_excel(file_path, skiprows=1)
-    df=dendrometer_and_battery_cleaner(df)
-    df_columns=df.columns
-    df[df_columns] = df[df_columns].apply(pd.to_numeric)
+
+    df,df_columns=prepare_dataset(data_block)
 
     df,df_validation_X,df_validation_y=generate_validation_data(df,df_columns)
 

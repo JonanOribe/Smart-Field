@@ -4,6 +4,7 @@ from os.path import isfile, join
 import csv
 from configparser import ConfigParser
 import sweetviz
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
@@ -52,3 +53,11 @@ def generate_validation_data(df,df_columns):
 
 def dendrometer_ajust(dendrometer_value):
     return int(str(dendrometer_value)[:DENDROMETER_AJUST_VALUE])
+
+def prepare_dataset(data_block):
+    file_path='{}{}{}'.format(PROYECT_PATH,'/data/',data_block)
+    df=pd.read_excel(file_path, skiprows=1)
+    df=dendrometer_and_battery_cleaner(df)
+    df_columns=df.columns
+    df[df_columns] = df[df_columns].apply(pd.to_numeric)
+    return df,df_columns
