@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from configparser import ConfigParser
 
 from main_utils import dendrometer_and_battery_cleaner, generate_decision_tree, generate_reports, generate_validation_data, get_files_with_data,prepare_dataset
+from main_future_utils import data_with_additions
 
 config = ConfigParser()
 config.read('config.cfg')
@@ -32,6 +33,5 @@ for data_block in xlsx_arr:
 
         generate_reports(X_train,X_test)
     else:
-        # For difference in hours
-        df['diff_in_hours']=(df['FECHA'].iloc[16] - df['FECHA'].iloc[0]).components.hours#TODO
+        data_with_additions(df)
         pass
