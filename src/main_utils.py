@@ -5,6 +5,8 @@ import csv
 from configparser import ConfigParser
 import sweetviz
 import pandas as pd
+from sklearn import metrics
+from termcolor import colored
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
@@ -70,3 +72,9 @@ def ajust_columns(df,future):
         df_columns=df_columns.drop(labels=['FECHA'])
     df[df_columns] = df[df_columns].apply(pd.to_numeric)
     return df,df_columns
+
+def get_predictions(clf,X_test,df_validation_X):
+    y_pred = clf.predict(X_test)
+    print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
+    val_pred = clf.predict(df_validation_X)
+    print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y, val_pred))
