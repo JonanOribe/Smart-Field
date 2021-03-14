@@ -73,7 +73,7 @@ def ajust_columns(df,future):
     df[df_columns] = df[df_columns].apply(pd.to_numeric)
     return df,df_columns
 
-def get_predictions(clf,X_test,df_validation_X):
+def get_predictions(clf,X_test,df_validation_X,y_test,df_validation_y):
     y_pred = clf.predict(X_test)
     print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
     val_pred = clf.predict(df_validation_X)

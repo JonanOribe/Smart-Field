@@ -22,7 +22,7 @@ for data_block in xlsx_arr:
 
         clf,X_train,X_test,y_train,y_test=generate_decision_tree(df,df_columns)
 
-        get_predictions(clf,X_test,df_validation_X)
+        get_predictions(clf,X_test,df_validation_X,y_test,df_validation_y)
 
         generate_reports(X_train,X_test)
     else:
