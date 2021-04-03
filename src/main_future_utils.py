@@ -35,9 +35,9 @@ def data_with_additions(df):
     for index, row in df.iterrows():
         if(counter_times>15):
             hours_difference=(df['FECHA'].iloc[counter_times-1].hour - df['FECHA'].iloc[counter_times-15].hour)
-            minutes_difference=(df['FECHA'].iloc[counter_times-1].timestamp() - df['FECHA'].iloc[counter_times-15].timestamp())
+            minutes_difference=(df['FECHA'].iloc[counter_times-1] - df['FECHA'].iloc[counter_times-15])
             column_position=0
-            if(hours_difference==2 and minutes_difference<=10000):
+            if(hours_difference==2 and round(minutes_difference.seconds/60)<=140): #TODO
                 for columns in array_of_columns:
                     df.at[index, columns]=df.iloc[counter_times-15][column_position]
                     column_position+=1
