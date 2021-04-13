@@ -21,6 +21,10 @@ COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
 COLUMNS_TO_DROP_FUTURE=config['DEFAULT']['columns_to_drop_future']
 DENDROMETER_AJUST_VALUE=int(config['DEFAULT']['dendrometer_ajust_value'])
 TREE_MAX_DEPTH=int(config['DEFAULT']['tree_max_depth'])
+ANOMALY_TCB_POSITIVE=int(config['DEFAULT']['anomaly_TCB_positive'])
+ANOMALY_TCB_NEGATIVE=float(config['DEFAULT']['anomaly_TCB_negative'])
+ANOMALY_HUMB=int(config['DEFAULT']['anomaly_HUMB'])
+ANOMALY_TD=int(config['DEFAULT']['anomaly_TD'])
 
 def from_str_to_array(future):
     if(future==0):
@@ -51,6 +55,7 @@ def generate_reports(X_train,X_test):
     report.show_html("informe_datos.html",open_browser=False)
 
 def generate_validation_data(df,df_columns):
+    anomaly_detector(df,'Trainig: ')
     df_validation=df.sample(n = 3000, replace = False)
     feature_cols = [a for a in df_columns if a not in [TARGET]]
     df_validation_X = df[feature_cols]
@@ -74,7 +79,26 @@ def ajust_columns(df,future):
     return df,df_columns
 
 def get_predictions(clf,X_test,df_validation_X,y_test,df_validation_y):
+    anomaly_detector(df_validation_X,'Predict: ')
     y_pred = clf.predict(X_test)
     print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
     val_pred = clf.predict(df_validation_X)
     print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y, val_pred))
+
+def anomaly_detector(df,phase):
+    sensor_error_default_text='Error detected on sensor '
+    errors_counter=0
+    for index, row in df.iterrows():
+        if(row['TCB']>ANOMALY_TCB_POSITIVE or float(row['TCB'])<ANOMALY_TCB_NEGATIVE):
+            sensor_error_TCB='{}{}{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TCB on index ',str(index),'.Range should to be between ',ANOMALY_TCB_POSITIVE,' and ',ANOMALY_TCB_NEGATIVE,' but output equals to ',row['TCB'])
+            errors_counter+=1
+            print(colored(sensor_error_TCB,'yellow'))
+        if(row['HUMB']>ANOMALY_HUMB):
+            sensor_error_HUMB='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'HUMB on index ',str(index),'.Range should be under ',ANOMALY_HUMB,' but is ',row['HUMB'])
+            errors_counter+=1
+            print(colored(sensor_error_HUMB,'yellow'))
+        if(ANOMALY_TD>row['TD'] or row['TD']==''):
+            sensor_error_TD='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TD on index ',str(index),'.Range should be over ',ANOMALY_TD,' but is ',row['TD'])
+            errors_counter+=1
+            print(colored(sensor_error_TD,'yellow'))
+    print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_counter)),'red'))
