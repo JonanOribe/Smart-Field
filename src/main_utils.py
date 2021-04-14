@@ -2,9 +2,11 @@ from os import listdir
 import os
 from os.path import isfile, join
 import csv
+import matplotlib.pyplot as plt
 from configparser import ConfigParser
 import sweetviz
 import pandas as pd
+import numpy as np
 from sklearn import metrics
 from termcolor import colored
 from sklearn.ensemble import RandomForestClassifier
@@ -25,6 +27,7 @@ ANOMALY_TCB_POSITIVE=int(config['DEFAULT']['anomaly_TCB_positive'])
 ANOMALY_TCB_NEGATIVE=float(config['DEFAULT']['anomaly_TCB_negative'])
 ANOMALY_HUMB=int(config['DEFAULT']['anomaly_HUMB'])
 ANOMALY_TD=int(config['DEFAULT']['anomaly_TD'])
+DEBUG_SENSORS=eval(config['DEFAULT']['DEBUG_SENSORS'])
 
 def from_str_to_array(future):
     if(future==0):
@@ -39,6 +42,7 @@ def dendrometer_and_battery_cleaner(df,future):
     df.drop(from_str_to_array(future), axis = 1, inplace = True)
     df=df[df['TD'].notna()]
     df['TD']=df['TD'].apply(dendrometer_ajust)
+    analyze_TD(df)
     return df
 
 def generate_decision_tree(df,df_columns):
@@ -96,13 +100,38 @@ def anomaly_detector(df,phase):
         if(row['TCB']>ANOMALY_TCB_POSITIVE or float(row['TCB'])<ANOMALY_TCB_NEGATIVE):
             sensor_error_TCB='{}{}{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TCB on index ',str(index),'.Range should to be between ',ANOMALY_TCB_POSITIVE,' and ',ANOMALY_TCB_NEGATIVE,' but output equals to ',row['TCB'])
             errors_dict['TCB']+=1
-            print(colored(sensor_error_TCB,'yellow'))
+            print(colored(sensor_error_TCB,'yellow')) if(DEBUG_SENSORS==True) else None
         if(row['HUMB']>ANOMALY_HUMB):
             sensor_error_HUMB='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'HUMB on index ',str(index),'.Range should be under ',ANOMALY_HUMB,' but is ',row['HUMB'])
             errors_dict['HUMB']+=1
-            print(colored(sensor_error_HUMB,'yellow'))
+            print(colored(sensor_error_HUMB,'yellow')) if(DEBUG_SENSORS==True) else None
         if(ANOMALY_TD>row['TD'] or row['TD']==''):
             sensor_error_TD='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TD on index ',str(index),'.Range should be over ',ANOMALY_TD,' but is ',row['TD'])
             errors_dict['TD']+=1
-            print(colored(sensor_error_TD,'yellow'))
+            print(colored(sensor_error_TD,'yellow')) if(DEBUG_SENSORS==True) else None
     print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_dict)),'red'))
+
+def analyze_TD(df):
+    df = df[df['TCB'] > 35] #AGREGAR UMBRAL TEMPORAL
+    TCB = df['TCB'].values
+    TD = df['TD'].values
+    # line 1 points
+    x1 = list(range(len(TCB)))
+    y1 = TCB/np.linalg.norm(TCB)
+    # plotting the line 1 points 
+    plt.plot(x1, y1, label = "TCB")
+    # line 2 points
+    x2 = list(range(len(TCB)))
+    y2 = TD/np.linalg.norm(TD)
+    # plotting the line 2 points 
+    plt.plot(x2, y2, label = "TD")
+    plt.xlabel('Index')
+    # Set the y axis label of the current axis.
+    plt.ylabel('Value')
+    # Set a title of the current axes.
+    plt.title('Temperature vs Dendrometer')
+    # show a legend on the plot
+    plt.legend()
+    # Display a figure.
+    plt.show()
+    print(df)
