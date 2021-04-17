@@ -7,6 +7,7 @@ from configparser import ConfigParser
 import sweetviz
 import pandas as pd
 import numpy as np
+from joblib import dump, load
 from sklearn import metrics
 from termcolor import colored
 from sklearn.ensemble import RandomForestClassifier
@@ -88,8 +89,10 @@ def get_predictions(clf,X_test,df_validation_X,y_test,df_validation_y):
     print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
     val_pred = clf.predict(df_validation_X)
     print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y, val_pred))
+    dump(clf, './model/model.joblib')
 
 def anomaly_detector(df,phase):
+    errors_data=[]
     sensor_error_default_text='Error detected on sensor '
     errors_dict= {
       "TCB": 0,
@@ -100,16 +103,22 @@ def anomaly_detector(df,phase):
         if(row['TCB']>ANOMALY_TCB_POSITIVE or float(row['TCB'])<ANOMALY_TCB_NEGATIVE):
             sensor_error_TCB='{}{}{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TCB on index ',str(index),'.Range should to be between ',ANOMALY_TCB_POSITIVE,' and ',ANOMALY_TCB_NEGATIVE,' but output equals to ',row['TCB'])
             errors_dict['TCB']+=1
+            errors_data.append([index,'TCB',row['TCB']])
             print(colored(sensor_error_TCB,'yellow')) if(DEBUG_SENSORS==True) else None
         if(row['HUMB']>ANOMALY_HUMB):
             sensor_error_HUMB='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'HUMB on index ',str(index),'.Range should be under ',ANOMALY_HUMB,' but is ',row['HUMB'])
             errors_dict['HUMB']+=1
+            errors_data.append([index,'HUMB',row['HUMB']])
             print(colored(sensor_error_HUMB,'yellow')) if(DEBUG_SENSORS==True) else None
         if(ANOMALY_TD>row['TD'] or row['TD']==''):
             sensor_error_TD='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TD on index ',str(index),'.Range should be over ',ANOMALY_TD,' but is ',row['TD'])
             errors_dict['TD']+=1
+            errors_data.append([index,'TD',row['TD']])
             print(colored(sensor_error_TD,'yellow')) if(DEBUG_SENSORS==True) else None
     print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_dict)),'red'))
+
+    df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
+    df_errors.to_csv('./sensor_errors.csv', index = False)
 
 def analyze_TD(df):
     df = df[df['TCB'] > 35] #AGREGAR UMBRAL TEMPORAL
@@ -133,5 +142,5 @@ def analyze_TD(df):
     # show a legend on the plot
     plt.legend()
     # Display a figure.
-    plt.show()
+    #plt.show()
     print(df)
