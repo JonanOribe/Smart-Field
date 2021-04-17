@@ -23,9 +23,14 @@ data_load_state = st.text('Loading data...')
 data = load_data(20)
 data_load_state.text("Done! (using st.cache)")
 
+sensor_errors=pd.read_csv("sensor_errors.csv")
+
 if st.checkbox('Show raw data'):
     st.subheader('Raw data')
     st.write(data)
+
+if st.checkbox('Show errors data'):
+    st.write(sensor_errors)
 
 humb_to_filter = st.slider('TCB', -40.0, 80.0,(25.0, 75.0))
 

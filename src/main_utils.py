@@ -120,6 +120,30 @@ def anomaly_detector(df,phase):
     df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
     df_errors.to_csv('./sensor_errors.csv', index = False)
 
+def selection_validation():
+    valid=False
+    while(valid!=True):
+        selection = input("Choose program mode:(dashboard/IA) ")
+        if(selection=='dashboard' or selection=='IA'):
+            valid=True
+            print("You choose: ", selection)
+        else:
+            print("Is is not an option.Retry")
+    program_launcher(selection)
+
+def program_launcher(selection):
+    main_str=colored('Launching the program','green')
+    option_selected=''
+
+    if(selection=='dashboard'):
+        option_selected=colored(' dashboard','green')
+        print('{}{}'.format(main_str,option_selected))
+        os.system("streamlit run ./src/main_dashboard.py")
+    else:
+        option_selected=colored(' IA MODEL','green')
+        print('{}{}'.format(main_str,option_selected))
+        main_process()
+
 def analyze_TD(df):
     df = df[df['TCB'] > 35] #AGREGAR UMBRAL TEMPORAL
     TCB = df['TCB'].values
