@@ -14,7 +14,7 @@ st.title('ALTAR data')
 DATE_COLUMN = 'FECHA'
 DATA_URL = get_files_with_data()
 
-col1, col2 = st.beta_columns((2,2))
+col1, col2, col3= st.beta_columns((2,2,2))
 
 @st.cache
 def load_data(nrows):
@@ -26,17 +26,23 @@ data_load_state = st.text('Loading data...')
 data = load_data(20)
 data_load_state.text("Done! (using st.cache)")
 
-sensor_errors=pd.read_csv("sensor_errors.csv")
+sensor_errors=pd.read_csv("sensor_errors.csv").set_index('Error_Type')
 
 if col1.checkbox('Show raw data'):
     col1.subheader('Raw data')
     col1.write(data)
 
 if col2.checkbox('Show errors data'):
+    grouped_data=sensor_errors.groupby(['Error_Type']).size()
     col2.subheader('Sensor´s errors data')
     col2.write(sensor_errors)
+    col3.text("")
+    col3.text("")
+    col3.text("")
+    col3.subheader('Grouped by error type')
+    col3.bar_chart(grouped_data)
 
-humb_to_filter = st.slider('TCB', -40.0, 80.0,(25.0, 75.0))
+humb_to_filter = st.slider('TCB', -40.0, 80.0,(-25.0, 75.0))
 
 filtered_data = data[data['TCB'] >= humb_to_filter[0]]
 filtered_data = filtered_data[filtered_data['TCB'] <= humb_to_filter[1]]
