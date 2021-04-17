@@ -44,10 +44,10 @@ if col2.checkbox('Show errors data'):
 
 humb_to_filter = st.slider('TCB', -40.0, 80.0,(-25.0, 75.0))
 
-filtered_data = data[data['TCB'] >= humb_to_filter[0]]
+filtered_data = data[data['TCB'] >= humb_to_filter[0]].set_index('FECHA')
 filtered_data = filtered_data[filtered_data['TCB'] <= humb_to_filter[1]]
 
 st.subheader('TCB')
-st.bar_chart(filtered_data)
+st.line_chart(filtered_data)
 
 
