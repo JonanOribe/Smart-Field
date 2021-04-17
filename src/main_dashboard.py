@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from main_utils import get_files_with_data
 from configparser import ConfigParser
+from main_utils import dendrometer_and_battery_cleaner
 config = ConfigParser()
 config.read('config.cfg')
 
@@ -23,7 +24,10 @@ def load_data(nrows):
     return data
 
 data_load_state = st.text('Loading data...')
-data = load_data(20)
+#data = load_data(100)
+data = pd.read_excel(data_path+'/'+DATA_URL[0], skiprows=1)
+data = data[data['TD'].notna()]
+data.drop(['TD','BAT','PAR'], axis=1, inplace=True)
 data_load_state.text("Done! (using st.cache)")
 
 sensor_errors=pd.read_csv("sensor_errors.csv").set_index('Error_Type')
@@ -42,7 +46,7 @@ if col2.checkbox('Show errors data'):
     col3.subheader('Grouped by error type')
     col3.bar_chart(grouped_data)
 
-humb_to_filter = st.slider('TCB', -40.0, 80.0,(-25.0, 75.0))
+humb_to_filter = st.slider('TCB', float(data['TCB'].min()), float(data['TCB'].max()),(float(data['TCB'].min()), float(data['TCB'].max())))
 
 filtered_data = data[data['TCB'] >= humb_to_filter[0]].set_index('FECHA')
 filtered_data = filtered_data[filtered_data['TCB'] <= humb_to_filter[1]]

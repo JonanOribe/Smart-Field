@@ -43,7 +43,7 @@ def dendrometer_and_battery_cleaner(df,future):
     df.drop(from_str_to_array(future), axis = 1, inplace = True)
     df=df[df['TD'].notna()]
     df['TD']=df['TD'].apply(dendrometer_ajust)
-    analyze_TD(df)
+    #analyze_TD(df)
     return df
 
 def generate_decision_tree(df,df_columns):
