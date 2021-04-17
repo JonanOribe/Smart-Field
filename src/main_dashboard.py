@@ -8,10 +8,13 @@ config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
 
+st.set_page_config(layout="wide")
 st.title('ALTAR data')
 
 DATE_COLUMN = 'FECHA'
 DATA_URL = get_files_with_data()
+
+col1, col2 = st.beta_columns((2,2))
 
 @st.cache
 def load_data(nrows):
@@ -25,12 +28,13 @@ data_load_state.text("Done! (using st.cache)")
 
 sensor_errors=pd.read_csv("sensor_errors.csv")
 
-if st.checkbox('Show raw data'):
-    st.subheader('Raw data')
-    st.write(data)
+if col1.checkbox('Show raw data'):
+    col1.subheader('Raw data')
+    col1.write(data)
 
-if st.checkbox('Show errors data'):
-    st.write(sensor_errors)
+if col2.checkbox('Show errors data'):
+    col2.subheader('Sensor´s errors data')
+    col2.write(sensor_errors)
 
 humb_to_filter = st.slider('TCB', -40.0, 80.0,(25.0, 75.0))
 

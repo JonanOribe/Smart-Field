@@ -144,6 +144,7 @@ def program_launcher(selection):
         print('{}{}'.format(main_str,option_selected))
         main_process()
 
+'''
 def analyze_TD(df):
     df = df[df['TCB'] > 35] #AGREGAR UMBRAL TEMPORAL
     TCB = df['TCB'].values
@@ -168,3 +169,4 @@ def analyze_TD(df):
     # Display a figure.
     #plt.show()
     print(df)
+'''
