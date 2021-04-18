@@ -1,13 +1,27 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from main_utils import get_files_with_data
+import json
+from main_utils import get_files_with_data,dendrometer_and_battery_cleaner,get_predictions_from_saved_model
 from configparser import ConfigParser
-from main_utils import dendrometer_and_battery_cleaner
+
 config = ConfigParser()
 config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
+PREDICTION_FORMAT_EXAMPLE={
+   "TCB":"35.2500",
+   "HUMB":"21.2000",
+   "SOILT":"21.2200",
+   "SOIL1":"267.3500",
+   "SOIL2":"171.7700",
+   "SOIL3":"126.9200",
+   "PAR":"0",
+   "TD":"0",
+   "ANE":"5.2800",
+   "WV":"0",
+   "PLV":"0"
+}
 
 st.set_page_config(layout="wide")
 st.title('ALTAR data')
@@ -52,4 +66,8 @@ filtered_data = filtered_data[filtered_data['TCB'] <= humb_to_filter[1]]
 st.subheader('TCB')
 st.line_chart(filtered_data)
 
-
+user_input = json.loads(st.text_input("Insert new values for prediction:", PREDICTION_FORMAT_EXAMPLE).replace("\'", "\""))
+submit = st.button('Launch predictor')
+if submit:
+    result=get_predictions_from_saved_model(user_input)
+    st.subheader('Predicted value: '+str(result))

@@ -18,6 +18,7 @@ config = ConfigParser()
 config.read('config.cfg')
 
 data_path = config['DEFAULT']['data_path']
+model_path = config['DEFAULT']['model_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
 COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
@@ -29,6 +30,8 @@ ANOMALY_TCB_NEGATIVE=float(config['DEFAULT']['anomaly_TCB_negative'])
 ANOMALY_HUMB=int(config['DEFAULT']['anomaly_HUMB'])
 ANOMALY_TD=int(config['DEFAULT']['anomaly_TD'])
 DEBUG_SENSORS=eval(config['DEFAULT']['DEBUG_SENSORS'])
+
+model_name='{}{}{}'.format(model_path,TARGET,'.joblib')
 
 def from_str_to_array(future):
     if(future==0):
@@ -43,7 +46,6 @@ def dendrometer_and_battery_cleaner(df,future):
     df.drop(from_str_to_array(future), axis = 1, inplace = True)
     df=df[df['TD'].notna()]
     df['TD']=df['TD'].apply(dendrometer_ajust)
-    #analyze_TD(df)
     return df
 
 def generate_decision_tree(df,df_columns):
@@ -89,7 +91,15 @@ def get_predictions(clf,X_test,df_validation_X,y_test,df_validation_y):
     print(colored("Test_Accuracy:",'green'),metrics.accuracy_score(y_test, y_pred))
     val_pred = clf.predict(df_validation_X)
     print(colored("Validation_Accuracy:",'yellow'),metrics.accuracy_score(df_validation_y, val_pred))
-    dump(clf, './model/model.joblib')
+    dump(clf, model_name)
+
+def get_predictions_from_saved_model(val):
+    target_name=model_name.replace('.joblib','').split('_')[1]
+    dataframe = pd.DataFrame(val, index=[0])
+    dataframe.drop(target_name, axis = 1, inplace = True)
+    clf = load(model_name)
+    y_pred = clf.predict(dataframe)
+    return y_pred
 
 def anomaly_detector(df,phase):
     errors_data=[]
@@ -119,54 +129,3 @@ def anomaly_detector(df,phase):
 
     df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
     df_errors.to_csv('./sensor_errors.csv', index = False)
-
-def selection_validation():
-    valid=False
-    while(valid!=True):
-        selection = input("Choose program mode:(dashboard/IA) ")
-        if(selection=='dashboard' or selection=='IA'):
-            valid=True
-            print("You choose: ", selection)
-        else:
-            print("Is is not an option.Retry")
-    program_launcher(selection)
-
-def program_launcher(selection):
-    main_str=colored('Launching the program','green')
-    option_selected=''
-
-    if(selection=='dashboard'):
-        option_selected=colored(' dashboard','green')
-        print('{}{}'.format(main_str,option_selected))
-        os.system("streamlit run ./src/main_dashboard.py")
-    else:
-        option_selected=colored(' IA MODEL','green')
-        print('{}{}'.format(main_str,option_selected))
-        main_process()
-
-'''
-def analyze_TD(df):
-    df = df[df['TCB'] > 35] #AGREGAR UMBRAL TEMPORAL
-    TCB = df['TCB'].values
-    TD = df['TD'].values
-    # line 1 points
-    x1 = list(range(len(TCB)))
-    y1 = TCB/np.linalg.norm(TCB)
-    # plotting the line 1 points 
-    plt.plot(x1, y1, label = "TCB")
-    # line 2 points
-    x2 = list(range(len(TCB)))
-    y2 = TD/np.linalg.norm(TD)
-    # plotting the line 2 points 
-    plt.plot(x2, y2, label = "TD")
-    plt.xlabel('Index')
-    # Set the y axis label of the current axis.
-    plt.ylabel('Value')
-    # Set a title of the current axes.
-    plt.title('Temperature vs Dendrometer')
-    # show a legend on the plot
-    plt.legend()
-    # Display a figure.
-    #plt.show()
-    print(df)
-'''
