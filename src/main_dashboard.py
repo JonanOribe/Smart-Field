@@ -11,6 +11,8 @@ data_path = config['DEFAULT']['data_path']
 
 st.set_page_config(layout="wide")
 st.title('ALTAR data')
+data_load_state = st.text('Loading data...')
+data_load_state.text("Done! (using st.cache)")
 
 DATE_COLUMN = 'FECHA'
 DATA_URL = get_files_with_data()
@@ -23,13 +25,11 @@ def load_data(nrows):
     data[DATE_COLUMN] = pd.to_datetime(data[DATE_COLUMN])
     return data
 
-data_load_state = st.text('Loading data...')
 #data = load_data(100)
 data = pd.read_excel(data_path+'/'+DATA_URL[0], skiprows=1)
 data = data[data['TD'].notna()]
 data.drop(['TD','BAT','PAR','PLV','WV'], axis=1, inplace=True)
 data=data.head(500)
-data_load_state.text("Done! (using st.cache)")
 
 sensor_errors=pd.read_csv("sensor_errors.csv").set_index('Error_Type')
 
