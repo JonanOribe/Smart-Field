@@ -17,7 +17,7 @@ PROYECT_PATH=os.getcwd()
 config = ConfigParser()
 config.read('config.cfg')
 
-data_path = config['DEFAULT']['data_path']
+DATA_PATH = config['DEFAULT']['data_path']
 model_path = config['DEFAULT']['model_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
@@ -40,7 +40,7 @@ def from_str_to_array(future):
         return COLUMNS_TO_DROP_FUTURE.split(',')
 
 def get_files_with_data():
-    return [f for f in listdir(data_path) if (FORMAT in f and not 'lock.' in f)]
+    return [f for f in listdir(DATA_PATH) if (FORMAT in f and not 'lock.' in f)]
 
 def dendrometer_and_battery_cleaner(df,future):
     df.drop(from_str_to_array(future), axis = 1, inplace = True)
