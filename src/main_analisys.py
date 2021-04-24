@@ -14,15 +14,18 @@ config = ConfigParser()
 config.read('config.cfg')
 FUTURE=int(config['DEFAULT']['future'])
 
-def selection_validation():
+def selection_validation(argv_value=''):
     valid=False
-    while(valid!=True):
-        selection = input("Choose program mode:(dashboard/IA) ")
-        if(selection=='dashboard' or selection=='IA'):
-            valid=True
-            print("You choose: ", selection)
-        else:
-            print("Is is not an option.Retry")
+    if(argv_value==''):
+        while(valid!=True):
+            selection = input("Choose program mode:(dashboard/IA) ")
+            if(selection=='dashboard' or selection=='IA'):
+                valid=True
+                print("You choose: ", selection)
+            else:
+                print("Is is not an option.Retry")
+    else:
+        selection = argv_value
     program_launcher(selection)
 
 def program_launcher(selection):
