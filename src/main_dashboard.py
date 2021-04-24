@@ -8,7 +8,7 @@ from configparser import ConfigParser
 config = ConfigParser()
 config.read('config.cfg')
 
-data_path = config['DEFAULT']['data_path']
+DATA_PATH = config['DEFAULT']['data_path']
 TARGET = config['DEFAULT']['target']
 PREDICTION_FORMAT_EXAMPLE={
    "TCB":"35.2500",
@@ -32,7 +32,7 @@ DATA_URL = get_files_with_data()
 
 col1, col2, col3= st.beta_columns((2,1,1))
 
-data = pd.read_excel(data_path+'/'+DATA_URL[0], skiprows=1)
+data = pd.read_excel(DATA_PATH+'/'+DATA_URL[0], skiprows=1)
 data = data[data['TD'].notna()]
 data.drop(['BAT'], axis=1, inplace=True)
 data=data.head(500)
