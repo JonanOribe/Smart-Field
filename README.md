@@ -1,4 +1,4 @@
-# Smart-Field
+# Smart-Field[![Python application](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml)[![Docker](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml)
 
 <h3>:construction: Entorno de trabajo:</h3>
 <li>Instalamos <b>Python 3.8.8</b></li> 
