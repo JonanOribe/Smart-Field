@@ -9,6 +9,6 @@
 <h3>:mag_right: Testing</h3>
 <li>Lanzamos los tests con <b>pytest -v</b></li>
 <h3>:rocket: Lanzamos el proyecto con:</h3>
-<li><b>py main.py</b> y elegimos entre <b>DASHBOARD</b>o<b>IA</b></li>
+<li><b>py main.py</b> y elegimos entre <b>DASHBOARD</b> o <b>IA</b></li>
 <h3>:chart_with_upwards_trend: Informe de resultados</h3>
 <li>Abrir <b>informe_datos.html</b> en un navegador</li>
