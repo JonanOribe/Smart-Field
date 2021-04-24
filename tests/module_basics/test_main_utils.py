@@ -15,7 +15,7 @@ from main_utils import dendrometer_ajust, dendrometer_and_battery_cleaner, gener
 config = ConfigParser()
 config.read('config.cfg')
 
-data_path = config['DEFAULT']['data_path']
+DATA_PATH = config['DEFAULT']['data_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
 COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
@@ -30,9 +30,12 @@ def test_dendrometer_ajust():
         assert final_val<(10**(DENDROMETER_AJUST_VALUE)) and not final_val<(10**(DENDROMETER_AJUST_VALUE-1))
 
 def test_config_params():
-    arr_to_test=[data_path,TARGET,FORMAT,COLUMNS_TO_DROP,DENDROMETER_AJUST_VALUE,TREE_MAX_DEPTH]
+    arr_to_test=[DATA_PATH,TARGET,FORMAT,COLUMNS_TO_DROP,DENDROMETER_AJUST_VALUE,TREE_MAX_DEPTH]
     for config_to_test in arr_to_test:
         assert len(str(config_to_test))>0
 
 def test_from_str_to_array():
     assert len(from_str_to_array(0))>0
+
+def test_get_files_with_data():
+    assert FORMAT in get_files_with_data()[0]
