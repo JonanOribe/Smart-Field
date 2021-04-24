@@ -18,10 +18,11 @@ config = ConfigParser()
 config.read('config.cfg')
 
 DATA_PATH = config['DEFAULT']['data_path']
-model_path = config['DEFAULT']['model_path']
+MODEL_PATH = config['DEFAULT']['model_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
 TEST_SIZE=float(config['DEFAULT']['test_size'])
+VALIDATION_SIZE=int(config['DEFAULT']['validation_size'])
 COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
 COLUMNS_TO_DROP_FUTURE=config['DEFAULT']['columns_to_drop_future']
 DENDROMETER_AJUST_VALUE=int(config['DEFAULT']['dendrometer_ajust_value'])
@@ -32,7 +33,7 @@ ANOMALY_HUMB=int(config['DEFAULT']['anomaly_HUMB'])
 ANOMALY_TD=int(config['DEFAULT']['anomaly_TD'])
 DEBUG_SENSORS=eval(config['DEFAULT']['DEBUG_SENSORS'])
 
-model_name='{}{}{}'.format(model_path,TARGET,'.joblib')
+model_name='{}{}{}'.format(MODEL_PATH,TARGET,'.joblib')
 
 def from_str_to_array(future):
     if(future==0):
@@ -63,7 +64,7 @@ def generate_reports(X_train,X_test):
     report.show_html("informe_datos.html",open_browser=False)
 
 def generate_validation_data(df,df_columns):
-    df_validation=df.sample(n = 3000, replace = False)
+    df_validation=df.sample(n = VALIDATION_SIZE, replace = False)
     feature_cols = [a for a in df_columns if a not in [TARGET]]
     df_validation_X = df[feature_cols]
     df_validation_y = df[TARGET].astype('int')
