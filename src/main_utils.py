@@ -21,6 +21,7 @@ DATA_PATH = config['DEFAULT']['data_path']
 model_path = config['DEFAULT']['model_path']
 TARGET = config['DEFAULT']['target']
 FORMAT = config['DEFAULT']['format']
+TEST_SIZE=float(config['DEFAULT']['test_size'])
 COLUMNS_TO_DROP=config['DEFAULT']['columns_to_drop']
 COLUMNS_TO_DROP_FUTURE=config['DEFAULT']['columns_to_drop_future']
 DENDROMETER_AJUST_VALUE=int(config['DEFAULT']['dendrometer_ajust_value'])
@@ -52,7 +53,7 @@ def generate_decision_tree(df,df_columns):
     feature_cols = [a for a in df_columns if a not in [TARGET]]
     X = df[feature_cols]
     y = df[TARGET]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_SIZE, random_state=1)
     clf = RandomForestClassifier(max_depth=TREE_MAX_DEPTH,random_state=0)
 
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train.astype('int'),y_test.astype('int')
