@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 PROYECT_PATH=os.getcwd()
 sys.path.insert(0, PROYECT_PATH + '/src/')
 
-from main_utils import dendrometer_ajust, dendrometer_and_battery_cleaner, generate_decision_tree, generate_reports, generate_validation_data, get_files_with_data
+from main_utils import dendrometer_ajust, dendrometer_and_battery_cleaner, generate_decision_tree, generate_reports, generate_validation_data, get_files_with_data,from_str_to_array
 
 config = ConfigParser()
 config.read('config.cfg')
@@ -33,3 +33,6 @@ def test_config_params():
     arr_to_test=[data_path,TARGET,FORMAT,COLUMNS_TO_DROP,DENDROMETER_AJUST_VALUE,TREE_MAX_DEPTH]
     for config_to_test in arr_to_test:
         assert len(str(config_to_test))>0
+
+def test_from_str_to_array():
+    assert len(from_str_to_array(0))>0
