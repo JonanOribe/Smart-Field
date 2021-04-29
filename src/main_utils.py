@@ -31,7 +31,7 @@ ANOMALY_TCB_POSITIVE=int(config['DEFAULT']['anomaly_TCB_positive'])
 ANOMALY_TCB_NEGATIVE=float(config['DEFAULT']['anomaly_TCB_negative'])
 ANOMALY_HUMB=int(config['DEFAULT']['anomaly_HUMB'])
 ANOMALY_TD=int(config['DEFAULT']['anomaly_TD'])
-DEBUG_SENSORS=eval(config['DEFAULT']['DEBUG_SENSORS'])
+DEBUG_SENSORS=eval(config['DEFAULT']['debug_sensors'])
 
 model_name='{}{}{}'.format(MODEL_PATH,TARGET,'.joblib')
 
@@ -68,8 +68,8 @@ def generate_validation_data(df,df_columns):
     feature_cols = [a for a in df_columns if a not in [TARGET]]
     df_validation_X = df[feature_cols]
     df_validation_y = df[TARGET].astype('int')
-    anomaly_detector(df_validation_X,'Trainig: ')
-    anomaly_detector(df_validation,'Predict: ')
+    anomaly_detector(df_validation_X,'Training: ')
+    anomaly_detector(df_validation,'Prediction: ')
     return df.drop(df_validation.index),df_validation_X,df_validation_y
 
 def dendrometer_ajust(dendrometer_value):
@@ -130,4 +130,4 @@ def anomaly_detector(df,phase):
     print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_dict)),'red'))
 
     df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
-    df_errors.to_csv('./sensor_errors.csv', index = False)
+    df_errors.to_csv('./sensor_errors/sensor_errors.csv', index = False)

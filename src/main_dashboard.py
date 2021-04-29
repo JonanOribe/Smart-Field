@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import json
+import pydeck as pdk
 from main_utils import get_files_with_data,dendrometer_and_battery_cleaner,get_predictions_from_saved_model
 from configparser import ConfigParser
 
@@ -27,6 +28,40 @@ PREDICTION_FORMAT_EXAMPLE={
 st.set_page_config(layout="wide")
 st.title('ALTAR data')
 
+sensors_location=pd.read_csv("./data/posicion_sensores.csv")
+df = pd.DataFrame(data=sensors_location)
+layer = pdk.Layer(
+        "ScatterplotLayer",
+        df,
+        pickable=True,
+        opacity=0.6,
+        filled=True,
+        radius_scale=2,
+        radius_min_pixels=10,
+        radius_max_pixels=500,
+        line_width_min_pixels=0.01,
+        get_position='[Longitud, Latitud]',
+        get_fill_color=[245, 245, 22],
+        get_line_color=[209, 209, 17],
+    )
+
+# Set the viewport location
+view_state = pdk.ViewState(latitude=41.781222, longitude=-3.771944, zoom=16, min_zoom= 10)
+
+# Render
+r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
+                 initial_view_state=view_state, tooltip={"html": "<b>IDSensor: </b> {IDSensor} <br /> "
+                                                                 "<b>Longitud: </b> {Longitud} <br /> "
+                                                                 "<b>Latitud: </b>{Latitud} <br /> "
+                                                                 "<b>Estado: </b>{Estado}"})
+
+# output of clicked point should be input to a reusable list
+selectedID = st.selectbox("Choose point ID", df['IDSensor'])
+r
+filtered_selection=df[df['IDSensor']==selectedID].values
+st.write('Values: '+str(filtered_selection))
+
+
 DATE_COLUMN = 'FECHA'
 DATA_URL = get_files_with_data()
 
@@ -37,7 +72,7 @@ data = data[data['TD'].notna()]
 data.drop(['BAT'], axis=1, inplace=True)
 data=data.head(500)
 
-sensor_errors=pd.read_csv("sensor_errors.csv").set_index('Error_Type')
+sensor_errors=pd.read_csv("./sensor_errors/sensor_errors.csv").set_index('Error_Type')
 
 col1.subheader('Raw data')
 col1.write(data)
