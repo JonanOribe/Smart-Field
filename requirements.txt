@@ -1,7 +1,7 @@
 pandas==1.2.2
 openpyxl==3.0.6
 sweetviz==2.0.9
-scikit-learn==0.24.1
+scikit-learn==0.24.2
 termcolor==1.1.0
 pytest==6.2.2
 requests==2.25.1
