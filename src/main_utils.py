@@ -60,7 +60,7 @@ def generate_decision_tree(df,df_columns):
     return clf.fit(X_train,y_train.astype('int')),X_train,X_test,y_train.astype('int'),y_test.astype('int')
 
 def generate_reports(X_train,X_test):
-    report = sweetviz.compare([X_train, "Train"], [X_test, "Test"], "TCB")
+    report = sweetviz.compare([X_train, "Train"], [X_test, "Test"], X_train.columns[0])
     report.show_html("informe_datos.html",open_browser=False)
 
 def generate_validation_data(df,df_columns):
@@ -106,28 +106,30 @@ def get_predictions_from_saved_model(val):
 def anomaly_detector(df,phase):
     errors_data=[]
     sensor_error_default_text='Error detected on sensor '
-    errors_dict= {
-      "TCB": 0,
-      "HUMB": 0,
-      "TD": 0
-    }
-    for index, row in df.iterrows():
-        if(row['TCB']>ANOMALY_TCB_POSITIVE or float(row['TCB'])<ANOMALY_TCB_NEGATIVE):
-            sensor_error_TCB='{}{}{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TCB on index ',str(index),'.Range should to be between ',ANOMALY_TCB_POSITIVE,' and ',ANOMALY_TCB_NEGATIVE,' but output equals to ',row['TCB'])
-            errors_dict['TCB']+=1
-            errors_data.append([index,'TCB',row['TCB']])
-            print(colored(sensor_error_TCB,'yellow')) if(DEBUG_SENSORS==True) else None
-        if(row['HUMB']>ANOMALY_HUMB):
-            sensor_error_HUMB='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'HUMB on index ',str(index),'.Range should be under ',ANOMALY_HUMB,' but is ',row['HUMB'])
-            errors_dict['HUMB']+=1
-            errors_data.append([index,'HUMB',row['HUMB']])
-            print(colored(sensor_error_HUMB,'yellow')) if(DEBUG_SENSORS==True) else None
-        if(ANOMALY_TD>row['TD'] or row['TD']==''):
-            sensor_error_TD='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TD on index ',str(index),'.Range should be over ',ANOMALY_TD,' but is ',row['TD'])
-            errors_dict['TD']+=1
-            errors_data.append([index,'TD',row['TD']])
-            print(colored(sensor_error_TD,'yellow')) if(DEBUG_SENSORS==True) else None
-    print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_dict)),'red'))
+    arr_options=["TCB","HUMB", "TD"]
+    if(TARGET not in arr_options):
+        errors_dict= {
+          "TCB": 0,
+          "HUMB": 0,
+          "TD": 0
+        }
+        for index, row in df.iterrows():
+            if(row['TCB']>ANOMALY_TCB_POSITIVE or float(row['TCB'])<ANOMALY_TCB_NEGATIVE):
+                sensor_error_TCB='{}{}{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TCB on index ',str(index),'.Range should to be between ',ANOMALY_TCB_POSITIVE,' and ',ANOMALY_TCB_NEGATIVE,' but output equals to ',row['TCB'])
+                errors_dict['TCB']+=1
+                errors_data.append([index,'TCB',row['TCB']])
+                print(colored(sensor_error_TCB,'yellow')) if(DEBUG_SENSORS==True) else None
+            if(row['HUMB']>ANOMALY_HUMB):
+                sensor_error_HUMB='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'HUMB on index ',str(index),'.Range should be under ',ANOMALY_HUMB,' but is ',row['HUMB'])
+                errors_dict['HUMB']+=1
+                errors_data.append([index,'HUMB',row['HUMB']])
+                print(colored(sensor_error_HUMB,'yellow')) if(DEBUG_SENSORS==True) else None
+            if(ANOMALY_TD>row['TD'] or row['TD']==''):
+                sensor_error_TD='{}{}{}{}{}{}{}{}'.format(phase,sensor_error_default_text,'TD on index ',str(index),'.Range should be over ',ANOMALY_TD,' but is ',row['TD'])
+                errors_dict['TD']+=1
+                errors_data.append([index,'TD',row['TD']])
+                print(colored(sensor_error_TD,'yellow')) if(DEBUG_SENSORS==True) else None
+        print(colored('{}{}{}'.format(phase,'Total errors from the device equals to ',str(errors_dict)),'red'))
 
-    df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
-    df_errors.to_csv('./sensor_errors/sensor_errors.csv', index = False)
+        df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
+        df_errors.to_csv('./sensor_errors/sensor_errors.csv', index = False)
