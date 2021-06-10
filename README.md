@@ -1,4 +1,4 @@
-# Smart-Field [![Python application](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml)[![Docker](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml)
+# Smart-Field [![Python application](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml)[![Docker](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml)[![DOI](https://zenodo.org/badge/340150859.svg)](https://zenodo.org/badge/latestdoi/340150859)
 
 <h3>:construction: Entorno de trabajo: :warning:ATENCIÓN: comandos válidos en Windows 10. Es posible que otros sistemas operativos necesiten usar otras formas de instalación:warning:</h3>
 <li>Instalamos <b>Python 3.8.8</b></li> 
