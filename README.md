@@ -4,7 +4,7 @@
 <li>Instalamos <b>Python 3.8.8</b></li> 
 <li>Creamos con: <b>python3 -m venv Smart-Field-env</b> #Ya viene creado desde el repositorio!!</li> 
 <li>Activamos en WINDOWS con: <b>Smart-Field-env\Scripts\activate</b></li>
-<li>Activamos en MAC con: <b>source Smart-Field-env/bin/activate</b></li>
+<li>Activamos en Mac con: <b>source Smart-Field-env/bin/activate</b></li>
 <h3>:books: Dependencias</h3>
 <li>Instalamos librerías con: <b>pip3 install -r requirements.txt</b></li>
 <h3>:mag_right: Testing</h3>
