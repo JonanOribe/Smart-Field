@@ -59,5 +59,3 @@ def main_process():
         else:
             data_with_additions(df)
             pass
-        
-#main_process()

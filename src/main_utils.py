@@ -79,6 +79,7 @@ def prepare_dataset(data_block,future=0):
     file_path='{}{}{}'.format(PROYECT_PATH,'/data/',data_block)
     df=pd.read_excel(file_path, skiprows=1)
     df=dendrometer_and_battery_cleaner(df,future)
+    df=categorization(df)
     return ajust_columns(df,future)
 
 def ajust_columns(df,future):
@@ -133,3 +134,7 @@ def anomaly_detector(df,phase):
 
         df_errors=pd.DataFrame(errors_data,columns = ['Index', 'Error_Type','Value'])
         df_errors.to_csv('./sensor_errors/sensor_errors.csv', index = False)
+        
+def categorization(df_result):
+    df_result=pd.get_dummies(data=df_result, columns=['WV'])
+    return df_result

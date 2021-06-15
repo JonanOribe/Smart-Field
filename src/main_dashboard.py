@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import json
 import pydeck as pdk
+from PIL import Image
 from main_utils import get_files_with_data,dendrometer_and_battery_cleaner,get_predictions_from_saved_model
 from configparser import ConfigParser
 
@@ -21,12 +22,29 @@ PREDICTION_FORMAT_EXAMPLE={
    "PAR":"1996.1100",
    "TD":"49020",
    "ANE":"5.2800",
-   "WV":"10",
+   "WV_0":"0",
+   "WV_1":"0",
+   "WV_2":"0",
+   "WV_3":"0",
+   "WV_4":"0",
+   "WV_5":"0",
+   "WV_6":"0",
+   "WV_7":"0",
+   "WV_8":"0",
+   "WV_9":"0",
+   "WV_10":"1",
+   "WV_11":"0",
+   "WV_12":"0",
+   "WV_13":"0",
+   "WV_14":"0",
+   "WV_15":"0",
    "PLV":"309.0300"
 }
 
 st.set_page_config(layout="wide")
-st.title('ALTAR data')
+img = Image.open('./statics/aGrae-navbar-@-1x.png')
+st.title('Data offered by:')
+st.image(img)
 
 sensors_location=pd.read_csv("./data/posicion_sensores.csv")
 df = pd.DataFrame(data=sensors_location)
@@ -56,7 +74,7 @@ r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
                                                                  "<b>Estado: </b>{Estado}"})
 
 # output of clicked point should be input to a reusable list
-selectedID = st.selectbox("Choose point ID", df['IDSensor'])
+selectedID = st.selectbox("Choose ID", df['IDSensor'])
 r
 filtered_selection=df[df['IDSensor']==selectedID].values
 st.write('Values: '+str(filtered_selection))
@@ -82,12 +100,12 @@ col3.subheader('Grouped by error type')
 col3.bar_chart(grouped_data)
 
 data.drop(['TD','PAR','PLV','WV'], axis=1, inplace=True)
-humb_to_filter = st.slider('TCB', float(data['TCB'].min()), float(data['TCB'].max()),(float(data['TCB'].min()), float(data['TCB'].max())))
+humb_to_filter = st.slider('TCB(Surface temperature)', float(data['TCB'].min()), float(data['TCB'].max()),(float(data['TCB'].min()), float(data['TCB'].max())))
 
 filtered_data = data[data['TCB'] >= humb_to_filter[0]].set_index('FECHA')
 filtered_data = filtered_data[filtered_data['TCB'] <= humb_to_filter[1]]
 
-st.subheader('TCB')
+st.subheader('Filtered by TCB')
 st.line_chart(filtered_data)
 
 user_input = json.loads(st.text_input("Insert new values for prediction:", PREDICTION_FORMAT_EXAMPLE).replace("\'", "\""))
