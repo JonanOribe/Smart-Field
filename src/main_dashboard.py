@@ -61,8 +61,6 @@ r
 filtered_selection=df[df['IDSensor']==selectedID].values
 st.write('Values: '+str(filtered_selection))
 
-
-DATE_COLUMN = 'FECHA'
 DATA_URL = get_files_with_data()
 
 col1, col2, col3= st.beta_columns((2,1,1))
