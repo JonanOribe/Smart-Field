@@ -45,7 +45,7 @@ st.set_page_config(layout="wide")
 img = Image.open('./statics/Smart Field.png')
 st.image(img)
 
-sensors_location=pd.read_csv("./data/posicion_sensores.csv")
+sensors_location=pd.read_csv("./data/sensors_positions.csv")
 df = pd.DataFrame(data=sensors_location)
 layer = pdk.Layer(
         "ScatterplotLayer",
@@ -80,7 +80,6 @@ st.write('Values: '+str(filtered_selection))
 
 DATA_URL = get_files_with_data()
 
-col1, col2, col3= st.beta_columns((2,1,1))
 
 data = pd.read_excel(DATA_PATH+'/'+DATA_URL[0], skiprows=1)
 data = data[data['TD'].notna()]
@@ -89,8 +88,10 @@ data=data.head(500)
 
 sensor_errors=pd.read_csv("./sensor_errors/sensor_errors.csv").set_index('Error_Type')
 
-col1.subheader('Raw data')
-col1.write(data)
+st.subheader('Raw data')
+st.write(data)
+
+col2, col3= st.beta_columns((2,2))
 
 grouped_data=sensor_errors.groupby(['Error_Type']).size()
 col2.subheader('Sensor´s errors data')
