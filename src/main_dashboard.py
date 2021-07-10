@@ -42,8 +42,7 @@ PREDICTION_FORMAT_EXAMPLE={
 }
 
 st.set_page_config(layout="wide")
-img = Image.open('./statics/aGrae-navbar-@-1x.png')
-st.title('Data offered by:')
+img = Image.open('./statics/Smart Field.png')
 st.image(img)
 
 sensors_location=pd.read_csv("./data/posicion_sensores.csv")
@@ -58,7 +57,7 @@ layer = pdk.Layer(
         radius_min_pixels=10,
         radius_max_pixels=500,
         line_width_min_pixels=0.01,
-        get_position='[Longitud, Latitud]',
+        get_position='[Longitude, Latitude]',
         get_fill_color=[245, 245, 22],
         get_line_color=[209, 209, 17],
     )
@@ -69,9 +68,9 @@ view_state = pdk.ViewState(latitude=41.781222, longitude=-3.771944, zoom=16, min
 # Render
 r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
                  initial_view_state=view_state, tooltip={"html": "<b>IDSensor: </b> {IDSensor} <br /> "
-                                                                 "<b>Longitud: </b> {Longitud} <br /> "
-                                                                 "<b>Latitud: </b>{Latitud} <br /> "
-                                                                 "<b>Estado: </b>{Estado}"})
+                                                                 "<b>Longitude: </b> {Longitude} <br /> "
+                                                                 "<b>Latitude: </b>{Latitude} <br /> "
+                                                                 "<b>Status: </b>{Status}"})
 
 # output of clicked point should be input to a reusable list
 selectedID = st.selectbox("Choose ID", df['IDSensor'])
