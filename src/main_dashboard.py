@@ -42,11 +42,10 @@ PREDICTION_FORMAT_EXAMPLE={
 }
 
 st.set_page_config(layout="wide")
-img = Image.open('./statics/aGrae-navbar-@-1x.png')
-st.title('Data offered by:')
+img = Image.open('./statics/Smart Field.png')
 st.image(img)
 
-sensors_location=pd.read_csv("./data/posicion_sensores.csv")
+sensors_location=pd.read_csv("./data/sensors_positions.csv")
 df = pd.DataFrame(data=sensors_location)
 layer = pdk.Layer(
         "ScatterplotLayer",
@@ -58,7 +57,7 @@ layer = pdk.Layer(
         radius_min_pixels=10,
         radius_max_pixels=500,
         line_width_min_pixels=0.01,
-        get_position='[Longitud, Latitud]',
+        get_position='[Longitude, Latitude]',
         get_fill_color=[245, 245, 22],
         get_line_color=[209, 209, 17],
     )
@@ -69,9 +68,9 @@ view_state = pdk.ViewState(latitude=41.781222, longitude=-3.771944, zoom=16, min
 # Render
 r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
                  initial_view_state=view_state, tooltip={"html": "<b>IDSensor: </b> {IDSensor} <br /> "
-                                                                 "<b>Longitud: </b> {Longitud} <br /> "
-                                                                 "<b>Latitud: </b>{Latitud} <br /> "
-                                                                 "<b>Estado: </b>{Estado}"})
+                                                                 "<b>Longitude: </b> {Longitude} <br /> "
+                                                                 "<b>Latitude: </b>{Latitude} <br /> "
+                                                                 "<b>Status: </b>{Status}"})
 
 # output of clicked point should be input to a reusable list
 selectedID = st.selectbox("Choose ID", df['IDSensor'])
@@ -81,7 +80,6 @@ st.write('Values: '+str(filtered_selection))
 
 DATA_URL = get_files_with_data()
 
-col1, col2, col3= st.beta_columns((2,1,1))
 
 data = pd.read_excel(DATA_PATH+'/'+DATA_URL[0], skiprows=1)
 data = data[data['TD'].notna()]
@@ -90,8 +88,10 @@ data=data.head(500)
 
 sensor_errors=pd.read_csv("./sensor_errors/sensor_errors.csv").set_index('Error_Type')
 
-col1.subheader('Raw data')
-col1.write(data)
+st.subheader('Raw data')
+st.write(data)
+
+col2, col3= st.beta_columns((2,2))
 
 grouped_data=sensor_errors.groupby(['Error_Type']).size()
 col2.subheader('Sensor´s errors data')
