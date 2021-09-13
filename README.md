@@ -13,6 +13,10 @@
 <li><b>py main.py</b> y elegimos entre <b>dashboard</b> o <b>IA</b></li>
 <h3>:chart_with_upwards_trend: Informe de resultados</h3>
 <li>Abrir <b>informe_datos.html</b> en un navegador</li>
+
+<h3>:clipboard: Diagram</h3>
+
+![alt text](https://github.com/JonanOribe/Smart-Field/blob/main/diagrams/SmartField.png?raw=true)
 <h3>:iphone: Preview</h3>
 
 ![alt text](https://github.com/JonanOribe/Smart-Field/blob/main/statics/dashboard2.png?raw=true)
