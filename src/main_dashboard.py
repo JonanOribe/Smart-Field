@@ -63,10 +63,10 @@ layer = pdk.Layer(
     )
 
 # Set the viewport location
-view_state = pdk.ViewState(latitude=41.781222, longitude=-3.771944, zoom=16, min_zoom= 10)
+view_state = pdk.ViewState(latitude=43.410499971871786, longitude=-2.925570077905309, zoom=18, min_zoom= 10)
 
 # Render
-r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
+r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-streets-v12',
                  initial_view_state=view_state, tooltip={"html": "<b>IDSensor: </b> {IDSensor} <br /> "
                                                                  "<b>Longitude: </b> {Longitude} <br /> "
                                                                  "<b>Latitude: </b>{Latitude} <br /> "
