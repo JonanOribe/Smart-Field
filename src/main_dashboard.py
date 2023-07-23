@@ -91,7 +91,7 @@ sensor_errors=pd.read_csv("./sensor_errors/sensor_errors.csv").set_index('Error_
 st.subheader('Raw data')
 st.write(data)
 
-col2, col3= st.beta_columns((2,2))
+col2, col3= st.columns([2,2])
 
 grouped_data=sensor_errors.groupby(['Error_Type']).size()
 col2.subheader('Sensor´s errors data')
