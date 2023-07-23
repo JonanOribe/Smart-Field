@@ -1,9 +1,9 @@
 # Smart-Field [![Python application](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/python-app.yml)[![Docker](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml/badge.svg?branch=main)](https://github.com/JonanOribe/Smart-Field/actions/workflows/docker-publish.yml)
 
 <h3>:construction: Entorno de trabajo: :warning:ATENCIÓN: comandos válidos en Windows 10. Es posible que otros sistemas operativos necesiten usar otras formas de instalación:warning:</h3>
-<li>Instalamos <b>Python 3.8.8</b></li> 
-<li>Creamos con: <b>python3 -m venv Smart-Field-env</b> #Ya viene creado desde el repositorio!!</li> 
-<li>Activamos con: <b>Smart-Field-env\Scripts\activate</b></li>
+<li>Instalamos <b>Python 3.10.12</b></li> 
+<li>Creamos con: <b>py -m venv env</b> #Ya viene creado desde el repositorio!!</li> 
+<li>Activamos con: <b>env\Scripts\activate</b></li>
 <h3>:books: Dependencias</h3>
 <li>Instalamos librerías con: <b>pip3 install -r requirements.txt</b></li>
 <h3>:mag_right: Testing</h3>
