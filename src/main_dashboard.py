@@ -66,7 +66,7 @@ layer = pdk.Layer(
 view_state = pdk.ViewState(latitude=41.781222, longitude=-3.771944, zoom=16, min_zoom= 10)
 
 # Render
-r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-v9',
+r = pdk.Deck(layers=[layer], map_style='mapbox://styles/mapbox/satellite-streets-v12',
                  initial_view_state=view_state, tooltip={"html": "<b>IDSensor: </b> {IDSensor} <br /> "
                                                                  "<b>Longitude: </b> {Longitude} <br /> "
                                                                  "<b>Latitude: </b>{Latitude} <br /> "
@@ -91,7 +91,7 @@ sensor_errors=pd.read_csv("./sensor_errors/sensor_errors.csv").set_index('Error_
 st.subheader('Raw data')
 st.write(data)
 
-col2, col3= st.beta_columns((2,2))
+col2, col3= st.columns([2,2])
 
 grouped_data=sensor_errors.groupby(['Error_Type']).size()
 col2.subheader('Sensor´s errors data')
